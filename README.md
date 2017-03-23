@@ -25,10 +25,10 @@ No problems encountered.
 
 1. Open command prompt
 2. Move to the directory with the jar file
-3. Run the command `java -jar ResolutionProver.jar <inputFile>[ <outputFilename>]`
+3. Run the command `java -jar ResolutionProver.jar <inputFile>`
 
 ### MacOS:
 
 1. Open Terminal
 2. Move to the directory with the jar file
-3. Run the command `java -jar ResolutionProver.jar <inputFile>[ <outputFilename>]`
+3. Run the command `java -jar ResolutionProver.jar <inputFile>`
