@@ -10,15 +10,28 @@ public class Driver {
     }
 
     public void greedy(ArrayList<Clause> clauses) {
-        while (!clauses.get(clauses.size()-1).isFalse()) {
-            Clause toMash = clauses.get(clauses.size()-1);
-            for (Clause other : clauses) {
+        for (int i = 0; i < clauses.size() && !clauses.get(clauses.size()-1).isFalse(); i++) {
+            Clause toMash = clauses.get(i);
+            for (int e = 0; e < i; e++) {
+                Clause other = clauses.get(e);
                 if (toMash.canResolve(other)) {
-                    clauses.add(toMash.resolve(other, clauses.size()+1));
-                    break;
+                    Clause mashed = toMash.resolve(other, clauses.size()+1);
+                    clauses.add(mashed);
+                    if (mashed.isFalse()) {
+                        break;
+                    }
                 }
             }
         }
+//        while (!clauses.get(clauses.size()-1).isFalse()) {
+//            Clause toMash = clauses.get(clauses.size()-1);
+//            for (Clause other : clauses) {
+//                if (toMash.canResolve(other)) {
+//                    clauses.add(toMash.resolve(other, clauses.size()+1));
+//                    break;
+//                }
+//            }
+//        }
         for (Clause c : clauses) {
             System.out.println(c);
         }
