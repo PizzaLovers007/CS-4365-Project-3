@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
-public class Clause {
+public class Clause implements Comparable<Clause> {
 
     ArrayList<Variable> vars;
     private Variable toMash;
@@ -49,6 +50,7 @@ public class Clause {
             }
         }
         mashed.source = new int[] {other.id, this.id};
+        Collections.sort(mashed.vars);
         return mashed;
     }
 
@@ -61,5 +63,36 @@ public class Clause {
                 id,
                 isFalse() ? "False" : vars.toString().replaceAll("[\\[\\],]", ""),
                 source.length == 0 ? "" : String.format("%d,%d", source[0], source[1]));
+    }
+
+    public int compareTo(Clause other) {
+        if (vars.size() == other.vars.size()) {
+            return id - other.id;
+        }
+        return vars.size() - other.vars.size();
+    }
+
+    public boolean equals(Object obj) {
+        if (obj instanceof Clause) {
+            Clause other = (Clause)obj;
+            if (vars.size() != other.vars.size()) {
+                return false;
+            }
+            for (int i = 0; i < vars.size(); i++) {
+                if (!vars.get(i).equals(other.vars.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public int hashCode() {
+        int sum = 0;
+        for (Variable v : vars) {
+            sum += v.hashCode();
+        }
+        return sum;
     }
 }
