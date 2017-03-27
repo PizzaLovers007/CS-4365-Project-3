@@ -6,10 +6,19 @@ import java.util.regex.Matcher;
 
 public class Driver {
 
+	/**
+	 * Starts up the main part of the program
+	 * @param clauses List of initial Clauses
+	 */
     public void go(ArrayList<Clause> clauses) {
         priorityQueue(clauses);
     }
 
+	
+	/**
+	 * Main part of the program which runs the algorithm to resolve clauses
+	 * @param clauses List of initial Clauses
+	 */
     public void priorityQueue(ArrayList<Clause> clauses) {
         PriorityQueue<Clause> queue = new PriorityQueue<>();
         HashSet<Clause> searched = new HashSet<>();
@@ -54,6 +63,10 @@ public class Driver {
         }
     }
 
+	/**
+	 * Print the clause tree in descending order with only the used clauses
+	 * @param clauses List of Clauses
+	 */
     public void printClauseTree(ArrayList<Clause> clauses) {
         boolean[] used = new boolean[clauses.size()];
         findClauses(clauses.size()-1, clauses, used);
@@ -65,6 +78,12 @@ public class Driver {
         System.out.printf("Size of final clause set: %d", clauses.size());
     }
 
+	/**
+	 * Used to find the clauses which are on the path to the solution
+	 * @param index Int of the clauses which were used
+	 * @param clauses List of Clauses
+	 * @param used Boolean given to mark that a clause was used
+	 */
     public void findClauses(int index, ArrayList<Clause> clauses, boolean[] used) {
         if (used[index]) {
             return;
@@ -82,45 +101,29 @@ public class Driver {
      * @param args command line arguments
      */
     public static void main(String[] args) {
-//		args = new String[1]; //DEBUG
-//		args[0] = "longinput.txt"; //DEBUG
         if (args.length != 1) {
             System.out.println("Incorrect number of arguments.");
             System.exit(1);
         }
         try {
             Scanner in = new Scanner(new File(args[0]));
-
-            // Test code
-            /*ArrayList<Clause> clauses = new ArrayList<>();
-            Clause c = new Clause(1);
-            c.addVariable(new Variable("A", false));
-            clauses.add(c);
-            c = new Clause(2);
-            c.addVariable(new Variable("A", true));
-            clauses.add(c);*/
 			
-			
-			// Main Parser
+			// Parser
 			ArrayList<Clause> clauses = new ArrayList<>();
 			Clause c;
 			String readClause;
 			Pattern pat = Pattern.compile("~?\\w+");
 			int givenID = 1;
-			while(in.hasNextLine())
-			{
+			while(in.hasNextLine()) {
 				c = new Clause(givenID);
 				readClause = in.nextLine();
 				Matcher mat = pat.matcher(readClause);
-				while(mat.find())
-				{
+				while(mat.find()) {
 					String var = mat.group();
-					if(var.charAt(0) == '~')
-					{
+					if(var.charAt(0) == '~') {
 						c.addVariable(new Variable(var.substring(1),true));
 					}
-					else
-					{
+					else {
 						c.addVariable(new Variable(var,false));
 					}
 					mat = pat.matcher(mat.replaceFirst("").trim());
