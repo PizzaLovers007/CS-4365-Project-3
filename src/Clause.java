@@ -58,6 +58,15 @@ public class Clause implements Comparable<Clause> {
         return vars.size() == 0;
     }
 
+    public boolean subsumedBy(Clause other) {
+        for (Variable v : other.vars) {
+            if (!vars.contains(v)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String toString() {
         return String.format("%d. %s \t{%s}",
                 id,

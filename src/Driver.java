@@ -20,7 +20,17 @@ public class Driver {
             if (searched.contains(toMash)) {
                 continue;
             }
-            System.out.println(queue.size() + " " + toMash);
+            boolean isSubsumed = false;
+            for (Clause other : searched) {
+                if (toMash.subsumedBy(other)) {
+                    isSubsumed = true;
+                    break;
+                }
+            }
+            if (isSubsumed) {
+                continue;
+            }
+//            System.out.println(queue.size() + " " + toMash);
             for (Clause other : searched) {
                 if (toMash.canResolve(other)) {
                     Clause mashed = toMash.resolve(other, clauses.size()+1);
