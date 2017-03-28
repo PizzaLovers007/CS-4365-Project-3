@@ -7,28 +7,36 @@ import java.util.regex.Matcher;
 public class Driver {
 
 	/**
-	 * Starts up the main part of the program
+	 * Starts up the main part of the program.
 	 * @param clauses List of initial Clauses
 	 */
     public void go(ArrayList<Clause> clauses) {
-        priorityQueue(clauses);
+        performResolution(clauses);
     }
 
 	
 	/**
-	 * Main part of the program which runs the algorithm to resolve clauses
-	 * @param clauses List of initial Clauses
+	 * Main part of the program which runs the algorithm to resolve clauses.
+	 * @param clauses List of initial Clauses (knowledge-base)
 	 */
-    public void priorityQueue(ArrayList<Clause> clauses) {
-        PriorityQueue<Clause> queue = new PriorityQueue<>();
-        HashSet<Clause> searched = new HashSet<>();
-        HashSet<Clause> willSearch = new HashSet<>();
+    public void performResolution(ArrayList<Clause> clauses) {
+        PriorityQueue<Clause> queue = new PriorityQueue<>(); // Queue to select next best clause
+        HashSet<Clause> searched = new HashSet<>();  // Clauses that have already been mashed
+        HashSet<Clause> willSearch = new HashSet<>();   // Clauses that have been added to the queue before
+
+        // Fill queue with initial clauses
         queue.addAll(clauses);
+
+        // Loop until every clause has been expanded
         while (!queue.isEmpty() && !queue.peek().isFalse()) {
             Clause toMash = queue.remove();
+
+            // Check if clause has been expanded already
             if (searched.contains(toMash)) {
                 continue;
             }
+
+            // Checks if clause is subsumed by (more specific than) an already mashed clause
             boolean isSubsumed = false;
             for (Clause other : searched) {
                 if (toMash.subsumedBy(other)) {
@@ -39,31 +47,42 @@ public class Driver {
             if (isSubsumed) {
                 continue;
             }
+
+            // Mash current clause with all previously mashed clauses
             for (Clause other : searched) {
                 if (toMash.canResolve(other)) {
                     Clause mashed = toMash.resolve(other, clauses.size()+1);
+
+                    // Check if mashed clause is already in the queue
                     if (willSearch.contains(mashed)) {
                         continue;
                     }
+
+                    // Add mashed clause to queue and knowledge-base
                     willSearch.add(mashed);
                     queue.add(mashed);
                     clauses.add(mashed);
+
+                    // Check if contradiction was made
                     if (mashed.isFalse()) {
                         break;
                     }
                 }
             }
+
+            // Clause has now been mashed before
             searched.add(toMash);
         }
-        if (queue.isEmpty()) {
+
+        if (queue.isEmpty()) { // No contradiction found
             System.out.println("Failure");
-        } else {
+        } else { // Contradiction was found
             printClauseTree(clauses);
         }
     }
 
 	/**
-	 * Print the clause tree in descending order with only the used clauses
+	 * Print the clause tree in descending order with only the used clauses.
 	 * @param clauses List of Clauses
 	 */
     public void printClauseTree(ArrayList<Clause> clauses) {
@@ -74,20 +93,27 @@ public class Driver {
                 System.out.println(clauses.get(i));
             }
         }
+
         System.out.printf("Size of final clause set: %d", clauses.size());
     }
 
 	/**
-	 * Used to find the clauses which are on the path to the solution
+	 * Used to find the clauses which are on the path to the solution.
 	 * @param index Int of the clauses which were used
 	 * @param clauses List of Clauses
 	 * @param used Boolean given to mark that a clause was used
 	 */
     public void findClauses(int index, ArrayList<Clause> clauses, boolean[] used) {
+        // Check if already marked
         if (used[index]) {
             return;
         }
+
+        // Mark
         used[index] = true;
+
+        // Stop if from original knowledge-base, otherwise continue with 2 clauses that were mashed
+        // to form the current clause
         Clause curr = clauses.get(index);
         if (curr.source.length != 0) {
             findClauses(curr.source[0]-1, clauses, used); // Recurses through the first resolved clause of the given clause
