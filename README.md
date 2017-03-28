@@ -9,6 +9,10 @@ Skye Pekerti
 
 ## List of Source Files
 
+* Clause.java
+* Driver.java
+* Variable.java
+
 ## Platform
 
 Windows/MacOS
