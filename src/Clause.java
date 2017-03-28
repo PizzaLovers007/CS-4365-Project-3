@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Object representation of a Clause.
+ */
 public class Clause implements Comparable<Clause> {
 
     ArrayList<Variable> vars; //List of Variables in a Clause
@@ -9,7 +12,7 @@ public class Clause implements Comparable<Clause> {
     int[] source; //Provides the two source Clauses for a resolved Clause
 
 	/**
-	 * Contructor for making a new (@code Clause)
+	 * Constructor for making a new {@code Clause}.
 	 */
     public Clause(int id) {
         vars = new ArrayList<>();
@@ -18,7 +21,7 @@ public class Clause implements Comparable<Clause> {
     }
 
 	/**
-	 * Adds a variable to the clause
+	 * Adds a variable to the clause.
 	 * @param toAdd Variable to be added
 	 * @return true if the variable is not already in the Clause
 	 */
@@ -32,7 +35,8 @@ public class Clause implements Comparable<Clause> {
     }
 
 	/**
-	 * Checks to see if this clause and another clause can be resolved
+	 * Checks to see if this clause and another clause can be resolved. Clauses can
+     * be resolved if there is exactly one variable pair (A and ~A).
 	 * @param other Clause to check resolution with
 	 * @return true if only one variable can be resolved 
 	 */
@@ -51,9 +55,9 @@ public class Clause implements Comparable<Clause> {
     }
 
 	/**
-	 * Resolves two clauses
+	 * Resolves two clauses.
 	 * @param other Clause to be resolved with
-	 * @param id int which give the clause's number in the list
+	 * @param id int which gives the clause number in the list
 	 * @return resolved Clause
 	 */
     public Clause resolve(Clause other, int id) {
@@ -74,7 +78,7 @@ public class Clause implements Comparable<Clause> {
     }
 
 	/**
-	 * Sees if resolution is finished and a contradiction is found
+	 * Sees if resolution is finished and a contradiction is found.
 	 * @return true if there are no more Variables in the Clause
 	 */
     public boolean isFalse() {
@@ -82,7 +86,7 @@ public class Clause implements Comparable<Clause> {
     }
 
 	/**
-	 *
+	 * Checks if this clause is subsumed by (more specific than) another clause.
 	 * @param other 
 	 * @return
 	 */
@@ -95,11 +99,7 @@ public class Clause implements Comparable<Clause> {
         return true;
     }
 
-	/**
-	 * Compares two clauses to see which one has more variables or has a higher id number
-	 * @param other Clause to be compared against
-	 * @return positive if the amount of variables in this clause is bigger, otherwise if the id is bigger
-	 */
+    // Compare by # of variables (greatest to least) then by id (least to greatest)
     public int compareTo(Clause other) {
         if (vars.size() == other.vars.size()) {
             return id - other.id;
@@ -107,11 +107,6 @@ public class Clause implements Comparable<Clause> {
         return vars.size() - other.vars.size();
     }
 
-	/**
-	 * Checks to see if two clauses are equal
-	 * @param obj Clause to be checked against
-	 * @return true if equal
-	 */
     public boolean equals(Object obj) {
         if (obj instanceof Clause) {
             Clause other = (Clause)obj;
@@ -128,10 +123,6 @@ public class Clause implements Comparable<Clause> {
         return false;
     }
 
-	/**
-	 * Create a hash for the Clause using the variables in the Clause
-	 * @return int for Clause's hash
-	 */
     public int hashCode() {
         int sum = 0;
         for (Variable v : vars) {
