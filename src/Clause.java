@@ -37,8 +37,8 @@ public class Clause implements Comparable<Clause> {
 	 * @return true if only one variable can be resolved 
 	 */
     public boolean canResolve(Clause other) {
-        int oppositeCount = 0;
-        for (Variable v1 : vars) {
+        int oppositeCount = 0; //Use a count to track to make sure only one variable can be resolved
+        for (Variable v1 : vars) { // Check each variable from the clauses to find a mashable variable
             for (Variable v2 : other.vars) {
                 if (v1.name.equals(v2.name) && v1.negated != v2.negated) {
                     toMash = v1;
@@ -57,13 +57,13 @@ public class Clause implements Comparable<Clause> {
 	 * @return resolved Clause
 	 */
     public Clause resolve(Clause other, int id) {
-        Clause mashed = new Clause(id);
-        for (Variable v : vars) {
+        Clause mashed = new Clause(id); // Newly resolved clause
+        for (Variable v : vars) { //Gets the variables from the first clause
             if (!v.name.equals(toMash.name)) {
                 mashed.addVariable(v);
             }
         }
-        for (Variable v : other.vars) {
+        for (Variable v : other.vars) { //Gets the variables from the second clause
             if (!v.name.equals(toMash.name)) {
                 mashed.addVariable(v);
             }

@@ -39,7 +39,6 @@ public class Driver {
             if (isSubsumed) {
                 continue;
             }
-//            System.out.println(queue.size() + " " + toMash);
             for (Clause other : searched) {
                 if (toMash.canResolve(other)) {
                     Clause mashed = toMash.resolve(other, clauses.size()+1);
@@ -69,8 +68,8 @@ public class Driver {
 	 */
     public void printClauseTree(ArrayList<Clause> clauses) {
         boolean[] used = new boolean[clauses.size()];
-        findClauses(clauses.size()-1, clauses, used);
-        for (int i = 0; i < used.length; i++) {
+        findClauses(clauses.size()-1, clauses, used); // Find all of the clauses on the solution path
+        for (int i = 0; i < used.length; i++) { // Print out all of the clauses on the solution path
             if (used[i]) {
                 System.out.println(clauses.get(i));
             }
@@ -91,8 +90,8 @@ public class Driver {
         used[index] = true;
         Clause curr = clauses.get(index);
         if (curr.source.length != 0) {
-            findClauses(curr.source[0]-1, clauses, used);
-            findClauses(curr.source[1]-1, clauses, used);
+            findClauses(curr.source[0]-1, clauses, used); // Recurses through the first resolved clause of the given clause
+            findClauses(curr.source[1]-1, clauses, used); // Recurses through the second resolved clause of the given clause
         }
     }
 
@@ -110,21 +109,21 @@ public class Driver {
 			
 			// Parser
 			ArrayList<Clause> clauses = new ArrayList<>();
-			Clause c;
+			Clause c; // Clause to be added
 			String readClause;
-			Pattern pat = Pattern.compile("~?\\w+");
+			Pattern pat = Pattern.compile("~?\\w+"); // Matches strings which can start with ~ and have one or more alphanumeric symbols
 			int givenID = 1;
-			while(in.hasNextLine()) {
+			while(in.hasNextLine()) { // Loop through all lines of input
 				c = new Clause(givenID);
 				readClause = in.nextLine();
 				Matcher mat = pat.matcher(readClause);
-				while(mat.find()) {
+				while(mat.find()) { // In each line of input, find valid strings which match the pattern
 					String var = mat.group();
 					if(var.charAt(0) == '~') {
-						c.addVariable(new Variable(var.substring(1),true));
+						c.addVariable(new Variable(var.substring(1),true)); // Add Varible with negation
 					}
 					else {
-						c.addVariable(new Variable(var,false));
+						c.addVariable(new Variable(var,false)); // Add Variable without negation
 					}
 					mat = pat.matcher(mat.replaceFirst("").trim());
 				}
