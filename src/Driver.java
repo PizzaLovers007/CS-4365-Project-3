@@ -94,7 +94,7 @@ public class Driver {
             }
         }
 
-        System.out.printf("Size of final clause set: %d", clauses.size());
+        System.out.printf("Size of final clause set: %d%n", clauses.size());
     }
 
 	/**

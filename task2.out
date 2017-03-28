@@ -1,0 +1,22 @@
+1. ~LowTemp ~NoLeak ReactorUnitSafe 	{}
+2. ~NoLeakH1 ~NoLeakH2 NoLeak 	{}
+3. ~okH1 NoLeakH1 	{}
+6. NoLeakH2 V2 okH2 	{}
+8. ~V1 LowTemp l 	{}
+10. ~l 	{}
+11. ~okH2 	{}
+12. okH1 	{}
+13. V1 	{}
+14. ~V2 	{}
+15. ~ReactorUnitSafe 	{}
+16. NoLeakH1 	{12,3}
+17. ~LowTemp ~NoLeak 	{15,1}
+19. ~NoLeakH2 NoLeak 	{16,2}
+22. ~LowTemp ~NoLeakH2 	{17,19}
+27. NoLeakH2 V2 	{11,6}
+32. NoLeakH2 	{14,27}
+33. ~LowTemp 	{22,32}
+38. ~V1 LowTemp 	{10,8}
+46. LowTemp 	{13,38}
+51. False 	{33,46}
+Size of final clause set: 51

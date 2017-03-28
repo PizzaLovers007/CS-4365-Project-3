@@ -1,0 +1,8 @@
+8. ~V1 LowTemp l 	{}
+10. ~l 	{}
+13. V1 	{}
+15. ~LowTemp 	{}
+28. ~V1 LowTemp 	{10,8}
+31. LowTemp 	{13,28}
+33. False 	{15,31}
+Size of final clause set: 33
